@@ -1,5 +1,4 @@
 import React from 'react'
-import GridDiv from './GridDiv';
 
 const GameBoard = () => {
   const make2dArray = (rows,cols)=>{
@@ -20,17 +19,18 @@ const GameBoard = () => {
   let rows = 30,cols = 30;
   let grid = make2dArray(rows,cols);
   let next = RandomZeroesAndOnes(grid);
-  // console.table(next);
+  console.table(next);
 
   return (
     <div>
-      <div>
-          {next && next[0] && next.map((el)=>{
-              el.map((gridDiv)=>{
-                return <GridDiv value={gridDiv}/>
+      <div className='flex flex-row flex-wrap'>
+          {next? next.map((el)=>{
+              return el.map((gridval)=>{
+                return <div style={{backgroundColor:`${(gridval===1)?"blue":"black"}`}}  className='border border-white min-h-[15px] w-[3.3%]'>{}</div>
               })
-          })}
+          }):<></>}
       </div>
+      
     </div>
   )
 }
