@@ -3,13 +3,12 @@ import Navbar from "@/components/Navbar";
 
 export default function Home() {
   return (
-    <main>
+    <main className="">
       <header>
         <Navbar />
       </header>
-      <section>
+      <section className="mx-12">
         <GameBoard />
-
       </section>
     </main>
   );

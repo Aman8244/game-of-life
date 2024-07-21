@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 const GameBoard = () => {
   const [next, setNext] = useState([]);
   const [intervalId, setIntervalId] = useState(null);
+  const [start, setStart] = useState(false);
+
   const rows = 30, cols = 30;
 
   useEffect(() => {
@@ -48,6 +50,7 @@ const GameBoard = () => {
   }
 
   const StartGame = () => {
+    setStart(prev=>!prev);
     const draw = () => {
       setNext(prevGrid => {
         const newGrid = prevGrid.map(row => [...row]);
@@ -69,10 +72,11 @@ const GameBoard = () => {
     if (intervalId) {
       clearInterval(intervalId);
     }
-    let newIntervalId = setInterval(draw, 1000);
+    let newIntervalId = setInterval(draw, 500);
     setIntervalId(newIntervalId);
   }
   const StopGame = () => {
+    setStart(prev=>!prev);
     if (intervalId) {
       clearInterval(intervalId);
     }
@@ -84,27 +88,36 @@ const GameBoard = () => {
     let grid = make2dArray(rows, cols);
     setNext(RandomZeroesAndOnes(grid));
   }
-
+  const ManualStart = () => {
+    let grid = make2dArray(rows, cols);
+    setNext(grid);
+  }
+  
   return (
     <div>
-      <div className='flex flex-row flex-wrap'>
+      <div className='flex flex-row flex-wrap mx-auto my-5 bg-[#e9ecef] bg-transparent'>
         {next.length > 0 && next.map((el, rowIndex) => {
           return el.map((gridval, colIndex) => {
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => ChangeValue(rowIndex, colIndex)}
-                style={{ backgroundColor: `${gridval === 1 ? "blue" : "black"}` }}
-                className='border border-white min-h-[15px] w-[3.3%]'
+                style={{ backgroundColor: `${gridval === 1 ? "#2E236C" : "#C8ACD6"}` }}
+                className='border border-gray-600 min-h-[15px] w-[3.333%]'
               ></div>
             );
           });
         })}
       </div>
-      <div className="utility-buttons">
+      <div className="utility-section">
+        <p className=' text-center'>
+          <button onClick={ManualStart} className='underline bg-transparent'>
+            Want a Manual Start ?
+          </button>
+        </p>
         <div className='flex flex-row space-x-10 justify-center items-center'>
-          <button onClick={StartGame} className='my-5 p-2 text-2xl bg-blue-500 text-white font-bold'>Start</button>
-          <button onClick={StopGame} className='my-5 p-2 text-2xl bg-blue-500 text-white font-bold'>Stop</button>
+          {!start ? <button onClick={StartGame} className='my-5 p-2 text-2xl bg-blue-500 text-white font-bold'>Start</button>
+            : <button onClick={StopGame} className='my-5 p-2 text-2xl bg-blue-500 text-white font-bold'>Stop</button>}
           <button onClick={ResetGame} className='my-5 p-2 text-2xl bg-blue-500 text-white font-bold'>Reset</button>
         </div>
       </div>
